@@ -170,8 +170,16 @@ function getDiscountedPrice(product) {
     return product.price - (product.price * product.discount / 100);
 }
 
+function getCart() {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+function saveCart(cart) {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
 function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cart = getCart();
     const count = cart.reduce((total, item) => total + item.quantity, 0);
 
     const cartCount = document.getElementById("cart-count");
@@ -188,8 +196,7 @@ function addToCart(productId) {
         return;
     }
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+    let cart = getCart();
     const existingProduct = cart.find(item => item.id === productId);
 
     if (existingProduct) {
@@ -209,7 +216,7 @@ function addToCart(productId) {
         });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    saveCart(cart);
     updateCartCount();
     alert("Product added to cart!");
 }
@@ -259,9 +266,10 @@ function displayFeaturedProducts() {
         return;
     }
 
-    const featuredProducts = products.slice(0, 6);
-
-    container.innerHTML = featuredProducts.map(createProductCard).join("");
+    container.innerHTML = products
+        .slice(0, 6)
+        .map(createProductCard)
+        .join("");
 }
 
 function applyFilters() {
@@ -303,11 +311,15 @@ function applyFilters() {
     });
 
     if (sort === "low-high") {
-        filteredProducts.sort((a, b) => getDiscountedPrice(a) - getDiscountedPrice(b));
+        filteredProducts.sort(
+            (a, b) => getDiscountedPrice(a) - getDiscountedPrice(b)
+        );
     }
 
     if (sort === "high-low") {
-        filteredProducts.sort((a, b) => getDiscountedPrice(b) - getDiscountedPrice(a));
+        filteredProducts.sort(
+            (a, b) => getDiscountedPrice(b) - getDiscountedPrice(a)
+        );
     }
 
     displayProducts(filteredProducts);
@@ -327,7 +339,8 @@ function searchProducts() {
         return;
     }
 
-    window.location.href = "products.html?search=" + encodeURIComponent(searchText);
+    window.location.href =
+        "products.html?search=" + encodeURIComponent(searchText);
 }
 
 function loadSearchFromURL() {
@@ -378,17 +391,28 @@ function displayProductDetails() {
 
             <div class="details-info">
                 <p class="category">${product.category}</p>
+
                 <h1>${product.name}</h1>
 
                 <p class="rating">★ ${product.rating} / 5</p>
 
                 <div class="details-price">
-                    <span class="discounted-price">Rs. ${discountedPrice.toFixed(0)}</span>
-                    <span class="old-price">Rs. ${product.price}</span>
-                    <span class="discount">${product.discount}% OFF</span>
+                    <span class="discounted-price">
+                        Rs. ${discountedPrice.toFixed(0)}
+                    </span>
+
+                    <span class="old-price">
+                        Rs. ${product.price}
+                    </span>
+
+                    <span class="discount">
+                        ${product.discount}% OFF
+                    </span>
                 </div>
 
-                <p class="description">${product.description}</p>
+                <p class="description">
+                    ${product.description}
+                </p>
 
                 <p class="stock">
                     <strong>Stock:</strong> ${product.stock} available
@@ -396,11 +420,22 @@ function displayProductDetails() {
 
                 <div class="quantity-box">
                     <button onclick="changeDetailQuantity(-1)">−</button>
-                    <input type="number" id="detail-quantity" value="1" min="1" max="${product.stock}">
+
+                    <input
+                        type="number"
+                        id="detail-quantity"
+                        value="1"
+                        min="1"
+                        max="${product.stock}"
+                    >
+
                     <button onclick="changeDetailQuantity(1)">+</button>
                 </div>
 
-                <button class="add-cart-detail" onclick="addDetailProductToCart(${product.id})">
+                <button
+                    class="add-cart-detail"
+                    onclick="addDetailProductToCart(${product.id})"
+                >
                     Add to Cart
                 </button>
             </div>
@@ -446,8 +481,12 @@ function addDetailProductToCart(productId) {
 
     const quantity = Number(quantityInput.value);
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (quantity < 1 || quantity > product.stock) {
+        alert("Please select a valid quantity.");
+        return;
+    }
 
+    let cart = getCart();
     const existingProduct = cart.find(item => item.id === productId);
 
     if (existingProduct) {
@@ -467,7 +506,7 @@ function addDetailProductToCart(productId) {
         });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    saveCart(cart);
     updateCartCount();
     alert("Product added to cart!");
 }
@@ -486,6 +525,129 @@ function displayRelatedProducts(product) {
     container.innerHTML = relatedProducts.map(createProductCard).join("");
 }
 
+function displayCart() {
+    const cartItemsContainer = document.getElementById("cart-items");
+
+    if (!cartItemsContainer) {
+        return;
+    }
+
+    const cart = getCart();
+
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+            <div class="empty-cart">
+                <h2>Your cart is empty</h2>
+                <p>Add some products to your cart.</p>
+                <a href="products.html">Shop Now</a>
+            </div>
+        `;
+
+        updateCartSummary();
+        return;
+    }
+
+    cartItemsContainer.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}">
+
+            <div class="cart-item-info">
+                <h3>${item.name}</h3>
+
+                <p>Rs. ${Number(item.price).toFixed(0)}</p>
+
+                <div class="cart-quantity">
+                    <button onclick="changeCartQuantity(${item.id}, -1)">−</button>
+
+                    <span>${item.quantity}</span>
+
+                    <button onclick="changeCartQuantity(${item.id}, 1)">+</button>
+                </div>
+
+                <p>
+                    Item Total:
+                    Rs. ${(Number(item.price) * item.quantity).toFixed(0)}
+                </p>
+
+                <button
+                    class="remove-button"
+                    onclick="removeFromCart(${item.id})"
+                >
+                    Remove
+                </button>
+            </div>
+        </div>
+    `).join("");
+
+    updateCartSummary();
+}
+
+function changeCartQuantity(productId, change) {
+    let cart = getCart();
+
+    const cartItem = cart.find(item => item.id === productId);
+    const product = products.find(item => item.id === productId);
+
+    if (!cartItem || !product) {
+        return;
+    }
+
+    cartItem.quantity += change;
+
+    if (cartItem.quantity < 1) {
+        cartItem.quantity = 1;
+    }
+
+    if (cartItem.quantity > product.stock) {
+        cartItem.quantity = product.stock;
+        alert("Sorry, stock limit reached.");
+    }
+
+    saveCart(cart);
+    displayCart();
+    updateCartCount();
+}
+
+function removeFromCart(productId) {
+    let cart = getCart();
+
+    cart = cart.filter(item => item.id !== productId);
+
+    saveCart(cart);
+    displayCart();
+    updateCartCount();
+}
+
+function updateCartSummary() {
+    const cart = getCart();
+
+    const totalItems = cart.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+
+    const subtotal = cart.reduce(
+        (total, item) => total + Number(item.price) * item.quantity,
+        0
+    );
+
+    const totalItemsElement = document.getElementById("total-items");
+    const subtotalElement = document.getElementById("cart-subtotal");
+    const totalElement = document.getElementById("cart-total");
+
+    if (totalItemsElement) {
+        totalItemsElement.textContent = totalItems;
+    }
+
+    if (subtotalElement) {
+        subtotalElement.textContent = "Rs. " + subtotal.toFixed(0);
+    }
+
+    if (totalElement) {
+        totalElement.textContent = "Rs. " + subtotal.toFixed(0);
+    }
+}
+
 function handleNewsletter() {
     const newsletterForm = document.getElementById("newsletter-form");
 
@@ -496,7 +658,8 @@ function handleNewsletter() {
     newsletterForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        const emailInput = newsletterForm.querySelector("input[type='email']");
+        const emailInput =
+            newsletterForm.querySelector("input[type='email']");
 
         if (emailInput && emailInput.value.trim() !== "") {
             alert("Thank you for subscribing!");
@@ -507,10 +670,13 @@ function handleNewsletter() {
 
 document.addEventListener("DOMContentLoaded", function() {
     updateCartCount();
+
     displayFeaturedProducts();
     displayProducts();
-    loadSearchFromURL();
     displayProductDetails();
+    displayCart();
+
+    loadSearchFromURL();
     handleNewsletter();
 
     const applyButton = document.getElementById("apply-filters");
