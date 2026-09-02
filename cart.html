@@ -1,91 +1,92 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - ShopEase</title>
-   <link rel="stylesheet" href="css/style.css">
+    <title>Cart | E-Commerce Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-    <nav class="navbar">
+    <aside class="sidebar">
         <div class="logo">
-            <a href="index.html">ShopEase</a>
+            <div class="logo-icon">E</div>
+            <div>
+                <h2>ECOM</h2>
+                <span>Dashboard</span>
+            </div>
         </div>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
+        <nav>
+            <a href="index.html">Dashboard</a>
             <a href="products.html">Products</a>
-            <a href="cart.html">Cart <span id="cart-count">0</span></a>
-        </div>
+            <a href="cart.html" class="active">Cart</a>
+            <a href="checkout.html">Checkout</a>
+        </nav>
+    </aside>
 
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search products...">
-            <button onclick="searchProducts()">Search</button>
-        </div>
-    </nav>
+    <main class="main-content">
 
-    <main class="cart-page">
-        <h1>Shopping Cart</h1>
+        <header class="topbar">
+            <div>
+                <h1>Shopping Cart</h1>
+                <p>Review your selected products</p>
+            </div>
 
-        <div class="cart-layout">
-            <div class="cart-items" id="cart-items"></div>
+            <a href="products.html" class="cart-btn">
+                ← Continue Shopping
+            </a>
+        </header>
 
-            <div class="cart-summary">
+        <section class="cart-container">
+
+            <div class="cart-items-section">
+
+                <div class="card">
+                    <h2>Cart Items</h2>
+
+                    <div id="cart-items"></div>
+                </div>
+
+            </div>
+
+            <div class="cart-summary card">
+
                 <h2>Order Summary</h2>
 
-                <div class="summary-row">
+                <div class="summary-line">
                     <span>Total Items</span>
                     <span id="total-items">0</span>
                 </div>
 
-                <div class="summary-row">
+                <div class="summary-line">
                     <span>Subtotal</span>
                     <span id="cart-subtotal">Rs. 0</span>
                 </div>
 
-                <div class="summary-row total-row">
+                <hr>
+
+                <div class="summary-total">
                     <span>Total</span>
-                    <span id="cart-total">Rs. 0</span>
+                    <strong id="cart-total">Rs. 0</strong>
                 </div>
 
-                <a href="checkout.html" class="checkout-button" id="checkout-button">
+                <a href="checkout.html"
+                   class="place-order-btn"
+                   id="checkout-button">
                     Proceed to Checkout
                 </a>
 
-                <a href="products.html" class="continue-shopping">
-                    Continue Shopping
-                </a>
             </div>
-        </div>
+
+        </section>
+
     </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div>
-                <h3>ShopEase</h3>
-                <p>Your one-stop online shopping destination.</p>
-            </div>
-
-            <div>
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">Cart</a>
-            </div>
-
-            <div>
-                <h3>Contact</h3>
-                <p>Email: support@shopease.com</p>
-                <p>Phone: +92 300 1234567</p>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2026 ShopEase. All Rights Reserved.</p>
-        </div>
-    </footer>
-
     <script src="script.js"></script>
+
 </body>
 </html>
+```
