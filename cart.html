@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - ShopEase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">ShopEase</a>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart <span id="cart-count">0</span></a>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search products...">
+            <button onclick="searchProducts()">Search</button>
+        </div>
+    </nav>
+
+    <main class="cart-page">
+        <h1>Shopping Cart</h1>
+
+        <div class="cart-layout">
+            <div class="cart-items" id="cart-items"></div>
+
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Total Items</span>
+                    <span id="total-items">0</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">Rs. 0</span>
+                </div>
+
+                <div class="summary-row total-row">
+                    <span>Total</span>
+                    <span id="cart-total">Rs. 0</span>
+                </div>
+
+                <a href="checkout.html" class="checkout-button" id="checkout-button">
+                    Proceed to Checkout
+                </a>
+
+                <a href="products.html" class="continue-shopping">
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <h3>ShopEase</h3>
+                <p>Your one-stop online shopping destination.</p>
+            </div>
+
+            <div>
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+            </div>
+
+            <div>
+                <h3>Contact</h3>
+                <p>Email: support@shopease.com</p>
+                <p>Phone: +92 300 1234567</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 ShopEase. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
