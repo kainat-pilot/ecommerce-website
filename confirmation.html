@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <main class="confirmation-page">
+
+        <div class="confirmation-card">
+
+            <div class="success-icon">✓</div>
+
+            <h1>Order Confirmed!</h1>
+
+            <p class="confirmation-message">
+                Thank you for your order.
+            </p>
+
+            <p>
+                Your order has been placed successfully.
+            </p>
+
+            <div class="customer-info">
+                <strong>Customer:</strong>
+                <span id="customerName">Customer</span>
+            </div>
+
+            <div class="confirmation-buttons">
+                <a href="index.html" class="home-btn">
+                    Back to Dashboard
+                </a>
+
+                <a href="products.html" class="shop-btn">
+                    Continue Shopping
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        const customerName =
+            localStorage.getItem("customerName");
+
+        if (customerName) {
+            document.getElementById("customerName").textContent =
+                customerName;
+        }
+    </script>
+
+</body>
+</html>
