@@ -315,7 +315,7 @@ function createProductCard(product) {
 
 
 // ================================
-// DISPLAY FEATURED PRODUCTS
+// FEATURED PRODUCTS
 // ================================
 
 function displayFeaturedProducts() {
@@ -336,6 +336,144 @@ function displayFeaturedProducts() {
 
 
 // ================================
+// ALL PRODUCTS
+// ================================
+
+function displayProducts(productList = products) {
+
+    const container =
+        document.getElementById("products-container");
+
+    if (!container) {
+        return;
+    }
+
+    if (productList.length === 0) {
+
+        container.innerHTML = `
+            <div class="no-products">
+                <h2>No products found</h2>
+                <p>Try another search or filter.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = productList
+        .map(createProductCard)
+        .join("");
+}
+
+
+// ================================
+// APPLY SEARCH + FILTERS + SORT
+// ================================
+
+function applyFilters() {
+
+    const searchInput =
+        document.getElementById("product-search");
+
+    const categoryFilter =
+        document.getElementById("category-filter");
+
+    const priceFilter =
+        document.getElementById("price-filter");
+
+    const sortFilter =
+        document.getElementById("sort-filter");
+
+    if (!searchInput || !categoryFilter || !priceFilter || !sortFilter) {
+        return;
+    }
+
+    const searchValue =
+        searchInput.value.toLowerCase().trim();
+
+    const categoryValue =
+        categoryFilter.value;
+
+    const priceValue =
+        priceFilter.value;
+
+    const sortValue =
+        sortFilter.value;
+
+
+    let filteredProducts = products.filter(product => {
+
+        const matchesSearch =
+            product.name.toLowerCase().includes(searchValue) ||
+            product.category.toLowerCase().includes(searchValue);
+
+        const matchesCategory =
+            categoryValue === "all" ||
+            product.category === categoryValue;
+
+        let matchesPrice = true;
+
+        const productPrice =
+            getDiscountedPrice(product);
+
+
+        if (priceValue === "0-2000") {
+            matchesPrice =
+                productPrice <= 2000;
+        }
+
+        else if (priceValue === "2000-4000") {
+            matchesPrice =
+                productPrice >= 2000 &&
+                productPrice <= 4000;
+        }
+
+        else if (priceValue === "4000-6000") {
+            matchesPrice =
+                productPrice >= 4000 &&
+                productPrice <= 6000;
+        }
+
+        else if (priceValue === "6000-10000") {
+            matchesPrice =
+                productPrice > 6000;
+        }
+
+
+        return (
+            matchesSearch &&
+            matchesCategory &&
+            matchesPrice
+        );
+    });
+
+
+    // Sorting
+
+    if (sortValue === "low-high") {
+
+        filteredProducts.sort(
+            (a, b) =>
+                getDiscountedPrice(a) -
+                getDiscountedPrice(b)
+        );
+    }
+
+    else if (sortValue === "high-low") {
+
+        filteredProducts.sort(
+            (a, b) =>
+                getDiscountedPrice(b) -
+                getDiscountedPrice(a)
+        );
+    }
+
+
+    displayProducts(filteredProducts);
+}
+
+
+// ================================
 // HOME SEARCH
 // ================================
 
@@ -352,7 +490,10 @@ function searchFromHome() {
         searchInput.value.trim();
 
     if (searchValue === "") {
-        window.location.href = "products.html";
+
+        window.location.href =
+            "products.html";
+
         return;
     }
 
@@ -374,7 +515,8 @@ function subscribeNewsletter() {
         return;
     }
 
-    const email = emailInput.value.trim();
+    const email =
+        emailInput.value.trim();
 
     if (email === "") {
         alert("Please enter your email address.");
@@ -393,13 +535,80 @@ function subscribeNewsletter() {
 
 
 // ================================
+// LOAD SEARCH FROM URL
+// ================================
+
+function loadSearchFromURL() {
+
+    const searchInput =
+        document.getElementById("product-search");
+
+    if (!searchInput) {
+        return;
+    }
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const searchValue =
+        params.get("search");
+
+    if (searchValue) {
+
+        searchInput.value =
+            searchValue;
+
+        applyFilters();
+
+    } else {
+
+        displayProducts();
+    }
+}
+
+
+// ================================
 // PAGE INITIALIZATION
 // ================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    displayFeaturedProducts();
+        displayFeaturedProducts();
 
-    updateCartCount();
+        loadSearchFromURL();
 
-});
+        updateCartCount();
+
+        const categoryFilter =
+            document.getElementById("category-filter");
+
+        const priceFilter =
+            document.getElementById("price-filter");
+
+        const sortFilter =
+            document.getElementById("sort-filter");
+
+        if (categoryFilter) {
+            categoryFilter.addEventListener(
+                "change",
+                applyFilters
+            );
+        }
+
+        if (priceFilter) {
+            priceFilter.addEventListener(
+                "change",
+                applyFilters
+            );
+        }
+
+        if (sortFilter) {
+            sortFilter.addEventListener(
+                "change",
+                applyFilters
+            );
+        }
+    }
+);
