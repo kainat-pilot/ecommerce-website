@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Shopora</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <span class="logo-mark">S</span>
+            <span>Shopora</span>
+        </a>
+
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-btn">☰</label>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="index.html#offers">Offers</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="products.html" class="search-icon">⌕</a>
+            <a href="cart.html" class="cart-link">🛒 <span class="cart-count">0</span></a>
+        </div>
+    </div>
+</header>
+
+<main>
+<section class="page-header">
+    <p class="eyebrow">OUR COLLECTION</p>
+    <h1>All Products</h1>
+    <p>Explore our complete collection of carefully selected products.</p>
+</section>
+
+<section class="products-layout section">
+
+    <aside class="filters">
+        <div class="filter-title">
+            <h3>Filter Products</h3>
+            <button onclick="resetFilters()">Reset</button>
+        </div>
+
+        <label for="product-search">Search</label>
+        <input type="search" id="product-search" placeholder="Search products...">
+
+        <label for="category-filter">Category</label>
+        <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Home & Living">Home & Living</option>
+        </select>
+
+        <label for="price-filter">Maximum Price</label>
+        <input type="range" id="price-filter" min="1000" max="100000" value="100000">
+        <div class="price-range">
+            <span>Rs. 1,000</span>
+            <strong id="price-value">Rs. 100,000</strong>
+        </div>
+
+        <label for="sort-filter">Sort By</label>
+        <select id="sort-filter">
+            <option value="default">Featured</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+        </select>
+    </aside>
+
+    <div class="products-area">
+        <div class="products-top">
+            <p id="product-count">Showing products</p>
+        </div>
+
+        <div class="product-grid" id="all-products"></div>
+    </div>
+
+</section>
+</main>
+
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <a href="index.html" class="logo footer-logo">
+                <span class="logo-mark">S</span>
+                <span>Shopora</span>
+            </a>
+            <p>Modern shopping made simple, beautiful and convenient.</p>
+        </div>
+
+        <div>
+            <h4>Shop</h4>
+            <a href="products.html">All Products</a>
+            <a href="products.html?category=Electronics">Electronics</a>
+            <a href="products.html?category=Fashion">Fashion</a>
+            <a href="products.html?category=Shoes">Shoes</a>
+        </div>
+
+        <div>
+            <h4>Help</h4>
+            <a href="#">Contact Us</a>
+            <a href="#">Shipping</a>
+            <a href="#">Returns</a>
+        </div>
+
+        <div>
+            <h4>Contact</h4>
+            <p>support@shopora.com</p>
+            <p>+92 300 1234567</p>
+            <p>Pakistan</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Shopora. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
